@@ -11,7 +11,7 @@ import uk.ac.ucl.model.Model;
 import uk.ac.ucl.model.ModelFactory;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * The SearchServlet handles HTTP requests for performing patient searches.
@@ -26,31 +26,9 @@ import java.util.List;
  */
 @WebServlet("/runsearch")
 public class SearchServlet extends HttpServlet {
-
-  /**
-   * Handles HTTP GET requests.
-   *
-   * By calling doPost, this allows search results to be bookmarked and refreshed
-   * (since many browsers default to GET for URL-based navigation).
-   *
-   * @param request  the HttpServletRequest object that contains the request the client has made of the servlet
-   * @param response the HttpServletResponse object that contains the response the servlet sends to the client
-   * @throws ServletException if the request for the GET could not be handled
-   * @throws IOException      if an input or output error is detected when the servlet handles the GET request
-   */
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     doPost(request, response);
   }
-
-  /**
-   * Handles HTTP POST requests.
-   * This is where the core search logic resides.
-   *
-   * @param request  the HttpServletRequest object that contains the request the client has made of the servlet
-   * @param response the HttpServletResponse object that contains the response the servlet sends to the client
-   * @throws ServletException if the request for the POST could not be handled
-   * @throws IOException      if an input or output error is detected when the servlet handles the POST request
-   */
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     // 1. Retrieve the search term from the request parameter.
     // The "searchstring" parameter name matches the 'name' attribute of the input field in search.html.
@@ -63,14 +41,18 @@ public class SearchServlet extends HttpServlet {
 
       // 3. Basic validation of search input.
       if (searchString == null || searchString.trim().isEmpty()) {
-        // If the user didn't enter anything, set an error message to be displayed on the result page.
-        request.setAttribute("errorMessage", "Please enter a search term.");
+        // If the user didn't enter anything, show all patients.
+        ArrayList<ArrayList<String>> allData = model.getPatientData();
+        request.setAttribute("patientData", allData);
+        request.setAttribute("columnNames", model.getColumnNames());
       } else {
         // 4. Perform the search and store the results in a request attribute.
         // This makes the 'result' list accessible to the JSP page.
-        List<String> searchResult = model.searchFor(searchString);
-        request.setAttribute("result", searchResult);
+        ArrayList<ArrayList<String>> searchResult = model.searchFor(searchString);
+        request.setAttribute("patientData", searchResult);
+        request.setAttribute("columnNames", model.getColumnNames());
       }
+      request.setAttribute("searchString", searchString);
 
       // 5. Forward the request to the JSP page for display.
       // RequestDispatcher.forward() is used to send the request/response objects to another resource (JSP).
