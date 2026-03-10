@@ -6,7 +6,7 @@
   <title>Patient Data App</title>
 </head>
 <body>
-<jsp:include page="/header.jsp"/>
+<jsp:include page="/defaultHeader.jsp"/>
 <div class="main">
   <h2>Add New Patient</h2>
   <form method="POST" action="/add">
@@ -53,6 +53,5 @@
     <button type="submit">Submit</button>
   </form>
 </div>
-<jsp:include page="/footer.jsp"/>
 </body>
 </html>

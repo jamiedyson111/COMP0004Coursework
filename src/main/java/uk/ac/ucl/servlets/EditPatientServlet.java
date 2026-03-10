@@ -21,12 +21,12 @@ public class EditPatientServlet extends HttpServlet{
     Model model = ModelFactory.getModel();
 
     for (int i = 0; request.getParameter("columnName" + i) != null; i++) {
-      String columnName = request.getParameter("columnName" + i);
-      String newValue = request.getParameter("newValue" + i);
-      model.editPatient(id, columnName, newValue);
+        String columnName = request.getParameter("columnName" + i);
+        String newValue = request.getParameter("newValue" + i);
+        model.editPatient(id, columnName, newValue);
     }
     model.saveToCSV("data/output.csv");
     response.sendRedirect("/patientList");
-
+    
   }
 }

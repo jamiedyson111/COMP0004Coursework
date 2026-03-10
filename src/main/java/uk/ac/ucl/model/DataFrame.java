@@ -3,8 +3,7 @@ package uk.ac.ucl.model;
 import java.util.ArrayList;
 
 public class DataFrame {
-    ArrayList<Column> columns = new ArrayList<>();
-    String name;
+    private ArrayList<Column> columns = new ArrayList<>();
 
     public void addColumn(String columnName){ 
         Column column = new Column(columnName);
@@ -36,8 +35,6 @@ public class DataFrame {
         for(Column cols :columns){
             if(cols.getName().equals(columnName) && row<cols.getSize()){ //Check to make sure the row isn't out of bounds, 
                 cols.setRowValue(row, value);
-            } else if (row>cols.getSize()){
-                System.out.println("Row out of bounds"); //Runs in the case where the row chosen was bigger than the total number of rows.
             }
         }
     }

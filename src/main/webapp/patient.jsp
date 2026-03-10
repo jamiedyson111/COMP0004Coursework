@@ -8,7 +8,7 @@
   <title>Patient Data App</title>
 </head>
 <body>
-<jsp:include page="/header.jsp"/>
+<jsp:include page="/defaultHeader.jsp"/>
 <div class="main">
   <h2>Patients:</h2>
   <%
@@ -16,7 +16,7 @@
     if (errorMessage != null)
     {
   %>
-      <p style="color: red;"><%= errorMessage %></p>
+      <p class="error-message"><%= errorMessage %></p>
   <%
     }
   %>
@@ -55,6 +55,5 @@
   
 
 </div>
-<jsp:include page="/footer.jsp"/>
 </body>
 </html>

@@ -1,58 +1,36 @@
-# WebAppExample
+Patient Data App — README
 
-A minimal Java web application intended for junior developers learning the basics of Java web apps, servlets, and JSPs. The app runs an embedded Tomcat server and serves static resources from `src/main/webapp`.
+This application is a Java web application for managing and analysing patient
+records, built using Java Servlets, JSP, and an embedded Apache Tomcat server.
 
-## Prerequisites
+Features Implemented:
+- Patient list view displaying all records in a sortable table
+- Individual patient detail view
+- Add new patient with a form (19 fields including ID, name, DOB, gender, etc.)
+- Edit existing patient records
+- Delete patients from the database
+- Search across all fields with keyword matching
+- Statistics dashboard showing:
+    - Oldest, youngest, and average patient age
+    - Alive vs dead breakdown (pie chart)
+    - Male vs female breakdown (pie chart)
+    - Marital status breakdown (pie chart)
+    - Age distribution by decade (bar chart)
+    - Ethnicity breakdown (bar chart)
+- Export data as CSV or JSON
+- Data persistence via CSV file storage
 
-- Java 25 (as configured in `pom.xml`)
-- Maven 3.9+
+Architecture:
+- MVC pattern: Model classes handle data logic, Servlets act as controllers,
+  and JSP pages handle the view layer
+- 9 separate servlets, one per endpoint
+- Model layer with DataFrame/Column structure for tabular data management
+- ModelFactory provides a singleton Model instance
+- All styling in an external CSS file
 
-## Project Structure
+To run: mvn clean compile exec:exec
+Then open http://localhost:8080
 
-- `src/main/java` — Java source code (including the embedded Tomcat bootstrap in `uk.ac.ucl.main.Main`)
-- `src/main/webapp` — Static web resources and JSPs
-- `target` — Build output (created by Maven)
-- `war-file` — Packaged WAR output (created by Maven)
-
-## Compile
-
-Build the project and produce a WAR file:
-
-```bash
-mvn clean package
-```
-
-This writes the WAR to `war-file/`.
-
-## Run (Embedded Tomcat)
-
-First compile the project, then run the main class via Maven:
-
-```bash
-mvn clean compile exec:exec
-```
-
-By default the server starts on port `8080`. Open:
-
-```
-http://localhost:8080
-```
-
-## Configuration
-
-You can configure the server using system properties or environment variables:
-
-- `SERVER_PORT` — Port to bind (default: `8080`)
-- `WEBAPP_DIR` — Web resources directory (default: `src/main/webapp/`)
-- `CLASSES_DIR` — Compiled classes directory (default: `target/classes`)
-
-Example (using environment variables):
-
-```bash
-SERVER_PORT=9090 mvn clean compile exec:exec
-```
-
-## Notes for Learners
-
-- The entry point is `uk.ac.ucl.main.Main` in `src/main/java/uk/ac/ucl/main/Main.java`.
-- Packaging as a WAR is useful if you want to deploy to an external Tomcat later.
+Highlighted feature: The statistics page uses Chart.js to render interactive
+pie and bar charts for patient demographics, giving a visual overview of the
+dataset at a glance.

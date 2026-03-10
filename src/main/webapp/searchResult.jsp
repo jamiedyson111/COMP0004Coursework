@@ -8,7 +8,7 @@
   <title>Patient Data App</title>
 </head>
 <body>
-<jsp:include page="/header.jsp"/>
+<jsp:include page="/defaultHeader.jsp"/>
 <% String searchString = (String) request.getAttribute("searchString");
 %>
 <div class="main">
@@ -18,32 +18,37 @@
     if (errorMessage != null)
     {
   %>
-      <p style="color: red;"><%= errorMessage %></p>
+      <p class="error-message"><%= errorMessage %></p>
   <% } else { %>
   <%
     String[] columnNames = (String[]) request.getAttribute("columnNames");
     ArrayList<ArrayList<String>> data = (ArrayList<ArrayList<String>>) request.getAttribute("patientData");
   %>
-  <table>
-    <tr>
-      <% if (columnNames != null && data!= null && data.size()>0) { for (String col : columnNames) { %>
-        <th><%= col %></th>
-      <% } } %>
-    </tr>
-    <% if (data != null && data.size() > 0) {
-         for (int i = 0; i < data.size(); i++) { %>
+    <table>
       <tr>
-        
-        <% for (int j = 0; j < data.get(i).size(); j++) { %>
-          <td><a href="/patient"><%= data.get(i).get(j) %></a></td>
-        <% } %>
+          <% if (columnNames != null) { for (String col : columnNames) { %>
+              <th><%= col %></th>
+          <% } } %>
+          <th></th>
       </tr>
-    <% } } else { %>
-      <h3>No search results found</h3>
-    <% } %>
+      <% if (data != null && data.size() > 0) {
+          for (int i = 0; i < data.size(); i++) { %>
+          <tr onclick="window.location='/patient?id=<%= data.get(i).get(0) %>'">
+              <% for (int j = 0; j < data.get(i).size(); j++) { %>
+                  <td><a href="/patient?id=<%= data.get(i).get(0) %>"><%= data.get(i).get(j) %></a></td>
+              <% } %>
+              <td>
+                  <form action="/delete" method="post">
+                      <input type="hidden" name="patientId" value="<%= data.get(i).get(0) %>">
+                      <button type="submit" class="btn-danger btn-sm" onclick="event.stopPropagation()">Delete</button>
+                  </form>
+              </td>
+          </tr>
+      <% } } else { %>
+          <tr><td colspan="<%= columnNames != null ? columnNames.length + 1 : 1 %>"><h3>No results found</h3></td></tr>
+      <% } %>
   </table>
   <% } %>
 </div>
-<jsp:include page="/footer.jsp"/>
 </body>
 </html>

@@ -12,7 +12,6 @@ import uk.ac.ucl.model.ModelFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 @WebServlet("/patientList")
 public class ViewPatientListServlet extends HttpServlet{
@@ -25,26 +24,10 @@ public class ViewPatientListServlet extends HttpServlet{
       // 2. Retrieve the list of patient names from the model.
       ArrayList<ArrayList<String>> patientData = model.getPatientData();
       String[] columnNames = model.getColumnNames();
-      int oldestAge = model.oldestPersonAge();
-      int youngestAge = model.youngestPersonAge();
-      int averageAge = model.averageAge();
-      int alive = model.alive();
-      int dead = model.dead();
-      int males = model.males();
-      int females = model.females();
-      HashMap<String, Integer> ethnicityBreakdown = model.ethinicityBreakdown();
       
       // 3. Add the data to the request object.
       request.setAttribute("patientData", patientData);
       request.setAttribute("columnNames", columnNames);
-      request.setAttribute("oldestPerson", oldestAge);
-      request.setAttribute("youngestPerson", youngestAge);
-      request.setAttribute("averageAge", averageAge);
-      request.setAttribute("alive", alive);
-      request.setAttribute("dead", dead);
-      request.setAttribute("male", males);
-      request.setAttribute("female", females);
-      request.setAttribute("ethnicityBreakdown", ethnicityBreakdown);
 
       // 4. Invoke the JSP for display.
       // RequestDispatcher.forward() is used to send the request/response objects to another resource (JSP).

@@ -127,7 +127,35 @@ public class Model {
             }
         }
         return females;
+
     }
+
+
+    public int single(){
+        int single = 0;
+        for(int i=0;i<dataFrame.getRowsCount();i++){
+            if(dataFrame.getValue("MARITAL", i).equals("S")){
+                single++;
+            }
+        }
+        return single;
+    }
+
+    public int married(){
+        int married = 0;
+        for(int i=0;i<dataFrame.getRowsCount();i++){
+            if(dataFrame.getValue("MARITAL", i).equals("M")){
+                married++;
+            }
+        }
+        return married;
+    }
+
+    public int total(){
+        return dataFrame.getRowsCount();
+    }
+
+
 
     public HashMap<String, Integer> ethinicityBreakdown(){
         HashMap<String, Integer> ethnicities = new HashMap<>();
@@ -181,5 +209,20 @@ public class Model {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void writeJSON(){
+        new JSONWriter(dataFrame);
+    }
+
+    public HashMap<String, Integer> getAgeDistribution() {
+        HashMap<String, Integer> distribution = new HashMap<>();
+        HashMap<String, Integer> ages = calculateAges();
+        for(int age: ages.values()){
+            int decade = (age/10) * 10;
+            String group = decade + "-" + (decade + 9);
+            distribution.put(group, distribution.getOrDefault(group, 0) + 1);
+        }
+        return distribution;
     }
 }
