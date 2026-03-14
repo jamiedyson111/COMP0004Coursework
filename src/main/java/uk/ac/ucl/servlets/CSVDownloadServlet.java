@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
+//Creates a functional download button for the CSV File 
 @WebServlet("/downloadCSV")
 public class CSVDownloadServlet extends HttpServlet{
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{

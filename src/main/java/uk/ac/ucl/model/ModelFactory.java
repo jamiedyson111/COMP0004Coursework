@@ -12,10 +12,8 @@ public class ModelFactory
         if (model == null)
         {
             model = new Model();
-            // Note where the data file is stored in the data directory,
-            // and the pathname to locate it.
-            // The data should be read the file once, not every time the model is accessed!
-            model.loadData("data/patients1000.csv");
+            // Singleton pattern: load the CSV once and reuse the same Model instance across all servlets to avoid re-reading a large file on every request.
+            model.loadData("data/patients1000.csv"); //Replace 1000 with 100, 10000 or 100000 to access different files
         }
         return model;
     }

@@ -2,10 +2,11 @@ package uk.ac.ucl.model;
 
 import java.util.ArrayList;
 
+// Stores patient data as a collection of Column objects..
 public class DataFrame {
     private ArrayList<Column> columns = new ArrayList<>();
 
-    public void addColumn(String columnName){ 
+    public void addColumn(String columnName){
         Column column = new Column(columnName);
         columns.add(column);
     }
@@ -14,6 +15,7 @@ public class DataFrame {
         return columns.stream().map(Column::getName).toArray(String[]::new);
     }
 
+    // All columns have the same number of rows, so checking the first column's size is enough.
     public int getRowsCount(){
         if(columns.size()>0){
             return columns.get(0).getSize();
@@ -28,12 +30,12 @@ public class DataFrame {
                 return cols.getRowValue(row);
             }
         }
-        return "Unable to find value";
+        return null;
     }
 
     public void putValue(String columnName, int row, String value){
         for(Column cols :columns){
-            if(cols.getName().equals(columnName) && row<cols.getSize()){ //Check to make sure the row isn't out of bounds, 
+            if(cols.getName().equals(columnName) && row<cols.getSize()){
                 cols.setRowValue(row, value);
             }
         }
@@ -47,6 +49,7 @@ public class DataFrame {
         }
     }
 
+    // Collects values across all columns for a given row, collecting all the details about a specific patient.
     public ArrayList<String> getRowValues(int row){
         if(row<this.getRowsCount() && row>=0){
             ArrayList<String> rowValues = new ArrayList<>();
@@ -57,9 +60,10 @@ public class DataFrame {
         } else {
             return null;
         }
-        
+
     }
 
+    // Removes the value at the given row index from every column, keeping all columns in sync so the DataFrame stays consistent.
     public void removeRow(int row){
         for(Column col : columns){
             col.removeRowValue(row);

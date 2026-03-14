@@ -1,8 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.HashMap" %>
-<%@ page import="java.util.TreeMap" %>
+<%@ page import="java.util.Map" %>
 
 
 <html>
@@ -28,8 +27,6 @@
   Integer single = (Integer) request.getAttribute("single");
   Integer unknown = (Integer) request.getAttribute("unknown");
   Integer total = (Integer) request.getAttribute("total");
-  
-  HashMap<String, Integer> ethnicities = (HashMap<String, Integer>) request.getAttribute("ethnicityBreakdown");
   
 %>
 
@@ -73,26 +70,18 @@
 </div>
 
 <%
-    HashMap<String, Integer> ageData = (HashMap<String, Integer>) request.getAttribute("ageData");
-    TreeMap<String, Integer> sortedAgeData = new TreeMap<>((a, b) -> {
-    int numA = Integer.parseInt(a.split("-")[0]);
-    int numB = Integer.parseInt(b.split("-")[0]);
-    return numA - numB;
-});
-sortedAgeData.putAll(ageData);
-
-    TreeMap<String, Integer> sortedEthnicityData = new TreeMap<>();
-    sortedEthnicityData.putAll(ethnicities);
+    Map<String, Integer> ageData = (Map<String, Integer>) request.getAttribute("ageData");
+    Map<String, Integer> ethnicityData = (Map<String, Integer>) request.getAttribute("ethnicityBreakdown");
 %>
 
 <script>
     var labels = [];
     var values = [];
     <%
-        for (String key : sortedAgeData.keySet()) {
+        for (Map.Entry<String, Integer> entry : ageData.entrySet()) {
     %>
-        labels.push("<%= key %>");
-        values.push(<%= sortedAgeData.get(key) %>);
+        labels.push("<%= entry.getKey() %>");
+        values.push(<%= entry.getValue() %>);
     <%
         }
     %>
@@ -111,15 +100,14 @@ sortedAgeData.putAll(ageData);
         }
     });
 
-    
     labels = [];
     values = [];
 
     <%
-        for (String key : sortedEthnicityData.keySet()) {
+        for (Map.Entry<String, Integer> entry : ethnicityData.entrySet()) {
     %>
-        labels.push("<%= key %>");
-        values.push(<%= sortedEthnicityData.get(key) %>);
+        labels.push("<%= entry.getKey() %>");
+        values.push(<%= entry.getValue() %>);
     <%
         }
     %>

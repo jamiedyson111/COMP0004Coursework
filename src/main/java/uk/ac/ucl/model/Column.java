@@ -2,11 +2,12 @@ package uk.ac.ucl.model;
 
 import java.util.ArrayList;
 
+// Represents a single column in the DataFrame, storing its name and all row values.
 public class Column {
     private ArrayList<String> rows = new ArrayList<>();
     private String name;
     
-    public Column(String name){ //Constructor that creates a column with a name passed as a parameter
+    public Column(String name){
         this.name = name;
     }
 

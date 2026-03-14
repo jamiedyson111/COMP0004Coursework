@@ -16,6 +16,7 @@ public class EditPatientServlet extends HttpServlet{
     response.sendRedirect("/patientList");
   }
 
+  // The patient.jsp form sends pairs of columnName0/newValue0, columnName1/newValue1, etc.
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String id = request.getParameter("patientId");
     Model model = ModelFactory.getModel();

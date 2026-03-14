@@ -13,6 +13,7 @@ import uk.ac.ucl.model.ModelFactory;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 @WebServlet("/statistics")
 public class StatisticsServlet extends HttpServlet{
@@ -32,8 +33,19 @@ public class StatisticsServlet extends HttpServlet{
     int single = model.single();
     int total = model.total();
     int unknown = total - single - married;
-    HashMap<String, Integer> ethnicityBreakdown = model.ethinicityBreakdown();
+    HashMap<String, Integer> ethnicityBreakdown = model.ethnicityBreakdown();
     HashMap<String, Integer> ageDistribution = model.getAgeDistribution();
+
+    // Sort age ranges numerically and ethnicities alphabetically here so the JSP only has to display data, not compute or sort it.
+    TreeMap<String, Integer> sortedAgeData = new TreeMap<>((a, b) -> {
+        int numA = Integer.parseInt(a.split("-")[0]);
+        int numB = Integer.parseInt(b.split("-")[0]);
+        return numA - numB;
+    });
+    sortedAgeData.putAll(ageDistribution);
+
+    TreeMap<String, Integer> sortedEthnicityData = new TreeMap<>();
+    sortedEthnicityData.putAll(ethnicityBreakdown);
 
     request.setAttribute("patientData", patientData);
     request.setAttribute("columnNames", columnNames);
@@ -44,9 +56,8 @@ public class StatisticsServlet extends HttpServlet{
     request.setAttribute("dead", dead);
     request.setAttribute("male", males);
     request.setAttribute("female", females);
-    request.setAttribute("ethnicityBreakdown", ethnicityBreakdown);
-    request.setAttribute("columnNames", model.getColumnNames());
-    request.setAttribute("ageData", ageDistribution);
+    request.setAttribute("ethnicityBreakdown", sortedEthnicityData);
+    request.setAttribute("ageData", sortedAgeData);
     request.setAttribute("married", married);
     request.setAttribute("single", single);
     request.setAttribute("unknown", unknown);

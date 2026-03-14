@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 @WebServlet("/add")
 public class AddPatientServlet extends HttpServlet{
+  // GET displays the empty form; column names are passed so the JSP can generate form fields without hardcoding them.
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
     Model model = ModelFactory.getModel();
     request.setAttribute("columnNames", model.getColumnNames());
@@ -23,10 +24,12 @@ public class AddPatientServlet extends HttpServlet{
     dispatch.forward(request, response);
   }
 
+  // POST collects the submitted form values and adds a new patient row.
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     Model model = ModelFactory.getModel();
     ArrayList<String> values = new ArrayList<>();
     for (String col : model.getColumnNames()) {
+      // If a field was left blank the form may not send a parameter at all.
       String val = request.getParameter(col);
       values.add(val != null ? val : "");
     }
